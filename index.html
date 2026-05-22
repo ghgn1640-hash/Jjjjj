@@ -1,0 +1,128 @@
+# Jjjjj <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Phát Video Thật - Không Quảng Cáo</title>
+    <style>
+        body {
+            background-color: #0b0c10;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: #1f2833;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        input {
+            width: 70%;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #45f3ff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #1fcaa8; }
+        .video-container {
+            width: 100%;
+            margin-top: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+        }
+        /* Tỷ lệ màn hình 16:9 chuẩn điện ảnh */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; 
+            height: 0;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .status-box {
+            padding: 15px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>TRÌNH PHÁT VIDEO CHỐNG QUẢNG CÁO</h2>
+    <div style="margin-bottom: 15px;">
+        <input type="text" id="videoUrlInput" placeholder="Dán link YouTube vào đây (Ví dụ: https://www.youtube.com/watch?v=...)">
+        <button onclick="loadAndPlayVideo()">XEM PHIM</button>
+    </div>
+
+    <div class="video-container">
+        <div class="video-wrapper" id="playerScreen">
+            <!-- Cục động cơ phát video thật sẽ được tự động chèn vào đây khi bấm nút -->
+            <iframe id="videoEngine" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+    <div class="status-box" id="systemStatus">
+        Trạng thái: Đang chờ bạn nạp đường link video...
+    </div>
+</div>
+
+<script>
+    function extractYouTubeId(url) {
+        // Thuật toán tự động bóc tách lấy mã ID của video YouTube từ đường link bất kỳ
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function loadAndPlayVideo() {
+        const urlInput = document.getElementById('videoUrlInput').value.trim();
+        const videoIframe = document.getElementById('videoEngine');
+        const statusDisplay = document.getElementById('systemStatus');
+
+        if (!urlInput) {
+            alert("Bạn chưa dán link phim vào kìa!");
+            return;
+        }
+
+        const videoId = extractYouTubeId(urlInput);
+
+        if (videoId) {
+            // Sử dụng máy chủ bản nhúng không lưu cookie (youtube-nocookie) để ép chặn quảng cáo tuyệt đối
+            const cleanEmbedUrl = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&rel=0";
+            
+            videoIframe.src = cleanEmbedUrl;
+            statusDisplay.innerText = "✅ Kết nối thành công! Đang truyền phát video chế độ sạch (No Ads)...";
+            statusDisplay.style.color = "#4ade80";
+        } else {
+            alert("Đường link không đúng định dạng YouTube rồi bạn ơi. Bạn kiểm tra lại xem dán đúng link chưa nhé!");
+            statusDisplay.innerText = "❌ Lỗi: Đường link không hợp lệ.";
+            statusDisplay.style.color = "#eb5757";
+        }
+    }
+</script>
+
+</body>
+  </html>
+  
